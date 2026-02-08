@@ -21,9 +21,3 @@ To start the server:
 ```
 
 When started, it will automatically open your default browser to `http://localhost:8000`.
-
-## Features
-- Fast C++ implementation
-- WebSocket support for real-time terminal interaction
-- Automatic browser launch
-- Single executable deployment (after compilation)
