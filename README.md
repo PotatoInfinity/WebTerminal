@@ -4,7 +4,7 @@ This is a high-performance C++ backend for the web terminal.
 
 ## Requirements
 - A C++ compiler (g++ or clang++)
-- Make (usually installed on macOS/Linux)
+- Make (usually installed on macOS)
 
 ## Compilation
 To compile the server, simply run:
