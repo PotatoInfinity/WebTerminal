@@ -1,6 +1,4 @@
-# C++ Web Terminal
-
-This is a high-performance C++ backend for the web terminal.
+Web Terminal
 
 ## Requirements
 - A C++ compiler (g++ or clang++)
