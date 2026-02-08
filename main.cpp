@@ -6,11 +6,14 @@
 #include <string>
 #include <unistd.h>
 #if defined(__APPLE__) || defined(__FreeBSD__)
+#include <mach-o/dyld.h>
 #include <util.h>
 #else
 #include <pty.h>
 #endif
 #include <fcntl.h>
+#include <libgen.h>
+#include <limits.h>
 #include <signal.h>
 #include <sys/wait.h>
 
@@ -103,7 +106,27 @@ static void fn(struct mg_connection *c, int ev, void *ev_data) {
   }
 }
 
-int main() {
+int main(int argc, char *argv[]) {
+  // Change working directory to the binary's directory
+  char path[PATH_MAX];
+  uint32_t size = sizeof(path);
+#if defined(__APPLE__)
+  if (_NSGetExecutablePath(path, &size) == 0) {
+    char real_path[PATH_MAX];
+    if (realpath(path, real_path) != NULL) {
+      char *dir = dirname(real_path);
+      chdir(dir);
+    }
+  }
+#else
+  ssize_t len = readlink("/proc/self/exe", path, sizeof(path) - 1);
+  if (len != -1) {
+    path[len] = '\0';
+    char *dir = dirname(path);
+    chdir(dir);
+  }
+#endif
+
   struct mg_mgr mgr;
   mg_mgr_init(&mgr);
   mg_http_listen(&mgr, "http://0.0.0.0:8000", fn, NULL);
